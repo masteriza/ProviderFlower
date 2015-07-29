@@ -7,6 +7,11 @@
     <groupId>groupId</groupId>
     <artifactId>ProviderFlower</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+        </dependency>
+    </dependencies>
 
-    
 </project>
