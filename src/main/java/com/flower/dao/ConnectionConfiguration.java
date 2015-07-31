@@ -1,9 +1,8 @@
 package com.flower.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ConnectionConfiguration {
@@ -13,6 +12,8 @@ public class ConnectionConfiguration {
 
 
     public static void main(String[] args) throws SQLException {
+
+
         try {
             createDbUserTable();
         } catch (SQLException e) {
@@ -23,8 +24,29 @@ public class ConnectionConfiguration {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        try {
+            readUserTable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            updateUserTable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            deleteUserTable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            dropUserTable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
+
 
     private static Connection getDBConnection() {
         try {
@@ -33,7 +55,7 @@ public class ConnectionConfiguration {
             System.out.println("Driver not found: " + driver);
         }
         try {
-            System.out.println("Connecting DB");
+            //System.out.println("Connecting DB");
             conn = DriverManager.getConnection(jdbcURL, "FLOWER", "123");
 
         } catch (SQLException e) {
@@ -74,15 +96,15 @@ public class ConnectionConfiguration {
     }
 
     private static String getCurrentTimeStamp() {
-        Date today = new Date();
-        String dateFormat = null;
-        System.out.println(dateFormat.format(String.valueOf(today.getTime())));
-        return dateFormat.format(String.valueOf(today.getTime()));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     private static void addUserTable() throws SQLException {
         Connection dbConnection = null;
         Statement statement = null;
+        System.out.println(getCurrentTimeStamp());
 
         String insertTableSQL = "INSERT INTO DBUSER"
                 + "(USER_ID, USERNAME, CREATED_BY, CREATED_DATE) " + "VALUES"
@@ -106,6 +128,88 @@ public class ConnectionConfiguration {
                 dbConnection.close();
             }
         }
+    }
+
+
+    private static void readUserTable() throws SQLException {
+        Connection dbConnection = null;
+        Statement statement = null;
+        System.out.println(getCurrentTimeStamp());
+
+        String selectTableSQL = "SELECT USER_ID, USERNAME from DBUSER";
+
+        try {
+            dbConnection = getDBConnection();
+            statement = dbConnection.createStatement();
+
+            // выбираем данные с Ѕƒ
+            ResultSet rs = statement.executeQuery(selectTableSQL);
+
+            // » если что то было получено то цикл while сработает
+            while (rs.next()) {
+                String userid = rs.getString("USER_ID");
+                String username = rs.getString("USERNAME");
+
+                System.out.println("userid : " + userid);
+                System.out.println("username : " + username);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void updateUserTable() throws SQLException {
+        Connection dbConnection = null;
+        Statement statement = null;
+        System.out.println(getCurrentTimeStamp());
+
+        String updateTableSQL = "UPDATE DBUSER SET USERNAME = 'mkyong_new' WHERE USER_ID = 1";
+
+        try {
+            dbConnection = getDBConnection();
+            statement = dbConnection.createStatement();
+
+            // выполн€ем запрос update SQL
+            statement.execute(updateTableSQL);
+
+            System.out.println("Record is updated to DBUSER table!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void deleteUserTable() throws SQLException {
+        Connection dbConnection = null;
+        Statement statement = null;
+        String deleteTableSQL = "DELETE DBUSER WHERE USER_ID = 1";
+        try {
+            dbConnection = getDBConnection();
+            statement = dbConnection.createStatement();
+
+            // выполн€ем запрос delete SQL
+            statement.execute(deleteTableSQL);
+            System.out.println("Record is deleted from DBUSER table!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void dropUserTable() throws SQLException {
+        Connection dbConnection = null;
+        Statement statement = null;
+        String dropTableSQL = "DROP TABLE DBUSER";
+        try {
+            dbConnection = getDBConnection();
+            statement = dbConnection.createStatement();
+
+            // выполн€ем запрос delete SQL
+            statement.execute(dropTableSQL);
+            System.out.println("Drop DBUSER table!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
     }
 
     //end class
