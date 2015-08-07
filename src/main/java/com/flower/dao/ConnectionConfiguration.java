@@ -34,7 +34,7 @@ public class ConnectionConfiguration {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        try {
+        /*try {
             deleteUserTable();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -43,7 +43,9 @@ public class ConnectionConfiguration {
             dropUserTable();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
+        }*/
+
+
 
     }
 
@@ -55,6 +57,7 @@ public class ConnectionConfiguration {
             System.out.println("Driver not found: " + driver);
         }
         try {
+
             //System.out.println("Connecting DB");
             conn = DriverManager.getConnection(jdbcURL, "FLOWER", "123");
 
@@ -136,7 +139,7 @@ public class ConnectionConfiguration {
         Statement statement = null;
         System.out.println(getCurrentTimeStamp());
 
-        String selectTableSQL = "SELECT USER_ID, USERNAME from DBUSER";
+        String selectTableSQL = "SELECT * FROM DEMO_CUSTOMERS dc";
 
         try {
             dbConnection = getDBConnection();
@@ -147,11 +150,11 @@ public class ConnectionConfiguration {
 
             // » если что то было получено то цикл while сработает
             while (rs.next()) {
-                String userid = rs.getString("USER_ID");
-                String username = rs.getString("USERNAME");
+                String userid = rs.getString("CUST_FIRST_NAME");
+                String username = rs.getString("CUST_LAST_NAME");
 
-                System.out.println("userid : " + userid);
-                System.out.println("username : " + username);
+                System.out.println("CUST_FIRST_NAME : " + userid);
+                System.out.println("CUST_LAST_NAME : " + username);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
