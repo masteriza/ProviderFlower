@@ -11,7 +11,8 @@ public class ConnectionConfiguration {
     private static Connection conn;
 
 
-    public static void main(String[] args) throws SQLException {
+    //public static void main(String[] args) throws SQLException {
+    public static void qwe() throws SQLException {
 
 
         try {
